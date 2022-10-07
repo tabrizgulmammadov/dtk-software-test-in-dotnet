@@ -365,7 +365,7 @@ namespace DTK.LPR
 
         #endregion
 
-        [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+        [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory", SetLastError = false)]
         public static extern void CopyMemory(IntPtr dest, IntPtr src, int count);
 
         public static Bitmap CreateBitmapFromBuffer(IntPtr pBuffer, int width, int height, int stride, PIXFMT pixelFormat)
