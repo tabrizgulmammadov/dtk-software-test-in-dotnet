@@ -3,6 +3,7 @@ using DTK.Video;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Reflection;
 
 namespace DTKSoftwareInDotnet
 {
@@ -17,11 +18,11 @@ namespace DTKSoftwareInDotnet
 
             // Adding test zone for detecting vechiles in specific rectangle zones
             // (this is test values for creating rectangle zone in left middle side in overall view)
-            var recognitionZoneIndex = parameters.AddZone();
-            var recognitionZonePoint1 = parameters.AddZonePoint(recognitionZoneIndex, 0, 300);
-            var recognitionZonePoint2 = parameters.AddZonePoint(recognitionZoneIndex, 0, 900);
-            var recognitionZonePoint3 = parameters.AddZonePoint(recognitionZoneIndex, 900, 300);
-            var recognitionZonePoint4 = parameters.AddZonePoint(recognitionZoneIndex, 900, 900);
+            //var recognitionZoneIndex = parameters.AddZone();
+            //var recognitionZonePoint1 = parameters.AddZonePoint(recognitionZoneIndex, 0, 300);
+            //var recognitionZonePoint2 = parameters.AddZonePoint(recognitionZoneIndex, 0, 900);
+            //var recognitionZonePoint3 = parameters.AddZonePoint(recognitionZoneIndex, 900, 300);
+            //var recognitionZonePoint4 = parameters.AddZonePoint(recognitionZoneIndex, 900, 900);
 
 
             LPREngine engine = new LPREngine(parameters, true, OnLicensePlateDetected);
@@ -54,7 +55,6 @@ namespace DTKSoftwareInDotnet
             Console.ReadKey();
         }
 
-
         static void OnFrameCaptured(VideoCapture videoCap, VideoFrame frame, object customObject)
         {
             try
@@ -64,28 +64,21 @@ namespace DTKSoftwareInDotnet
             }
             catch (Exception ex)
             {
-                throw;
+                Console.WriteLine($"Error has occured.\nError message: {ex.Message}.\nStaceTrace: {ex.StackTrace}.");
             }
         }
 
         static void OnLicensePlateDetected(LPREngine engine, LicensePlate plate)
         {
-            Console.WriteLine(string.Format("Plate text: {0} Country: {1} Confidence: {2}",
-                   plate.Text, plate.CountryCode, plate.Confidence));
+            Console.WriteLine($"Plate text: {plate.Text} Country: {plate.CountryCode} Confidence: {plate.Confidence}\nCoordinates X: {plate.X} Y: {plate.Y}\nHeight: {plate.Height} Width: {plate.Width}\n\n");
 
-            using (var stream = new MemoryStream())
-            {
-                plate.Image.Save(stream, ImageFormat.Jpeg);
+            var rootDirectory = $"{Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).Location)}/Images/{plate.Text}";
 
-                var image = Image.FromStream(stream);
+            if (!Directory.Exists(rootDirectory))
+                Directory.CreateDirectory(rootDirectory);
 
-                //TEST
-                string carImgFilename = $"images/{plate.Text}-car-{DateTime.Now.Ticks}";
-                image.Save(carImgFilename);
-            }
-
-            //    string plateImgFilename = $"images/{plate.Text}-plate-{DateTime.Now.Ticks}";
-            //plate.PlateImage.Save(plateImgFilename, plate.PlateImage.RawFormat);
+            plate.Image.Save($"{rootDirectory}/car_{plate.DateTime:dd-MM-yyyy-HH-mm-ss.fff}__X_{plate.X}_Y_{plate.Y}_height_{plate.Height}_width_{plate.Width}.jpg");
+            plate.PlateImage.Save($"{rootDirectory}/plate_{plate.DateTime:dd-MM-yyyy-HH-mm-ss.fff}.jpg");
 
             plate.Dispose();
         }
