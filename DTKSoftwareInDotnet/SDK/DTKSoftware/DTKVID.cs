@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace DTK.Video
+namespace DTKSoftwareInDotnet.SDK.DTKSoftware
 {
     internal class DTKVID
     {
@@ -14,13 +14,13 @@ namespace DTK.Video
         static DTKVID()
         {
             var is64 = IntPtr.Size == 8;
-            string assembly_path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DTKVID)).Location);
+            string assembly_path = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(DTKLPR5)).Location), "SDK\\DTKSoftware\\DLLs");
             string library_path = is64 ? assembly_path + "\\x64\\" : assembly_path + "\\x86\\";
             SetDllDirectory(library_path);
             IntPtr res = LoadLibrary(dllName);
             SetDllDirectory("");
             if (res == IntPtr.Zero)
-                LoadLibrary(dllName);           
+                LoadLibrary(dllName);
         }
 
         #region DLL Imports
@@ -40,7 +40,7 @@ namespace DTK.Video
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         internal delegate void CaptureErrorNative(IntPtr videoCap, ERR_CAPTURE errorCode, IntPtr customObject);
-      
+
         // =====================
         // Video Capture
         // =====================
@@ -92,7 +92,7 @@ namespace DTK.Video
         internal static extern int VideoFrame_GetHeight(IntPtr hFrame);
 
         [DllImport(dllName)]
-        internal static extern UInt64 VideoFrame_Timestamp(IntPtr hFrame);
+        internal static extern ulong VideoFrame_Timestamp(IntPtr hFrame);
 
         [DllImport(dllName)]
         public static extern void VideoFrame_GetImageBuffer(IntPtr hFrame, int format, out IntPtr pBuffer, out int width, out int height, out int stride);
@@ -108,7 +108,7 @@ namespace DTK.Video
 
     public delegate void FrameCaptured(VideoCapture videoCap, VideoFrame frame, object customObject);
 
-    public delegate void CaptureError(VideoCapture videoCap, ERR_CAPTURE errorCode, object customObject);      
+    public delegate void CaptureError(VideoCapture videoCap, ERR_CAPTURE errorCode, object customObject);
 
     public enum PIXFMT
     {
@@ -141,13 +141,13 @@ namespace DTK.Video
         {
             this.frameCapturedCallback = frameCapturedCallback;
             this.captureErrorCallback = captureErrorCallback;
-            this.navive_frameCapturedCallback = new DTKVID.FrameCapturedNative(OnFrameCapturedNative);
-            this.navive_captureErrorCallback = new DTKVID.CaptureErrorNative(OnCaptureErrorNative);
+            navive_frameCapturedCallback = new DTKVID.FrameCapturedNative(OnFrameCapturedNative);
+            navive_captureErrorCallback = new DTKVID.CaptureErrorNative(OnCaptureErrorNative);
             this.customObject = customObject;
-        
-            this.hVideoCapture = DTKVID.VideoCapture_Create(
-                Marshal.GetFunctionPointerForDelegate(navive_frameCapturedCallback), 
-                Marshal.GetFunctionPointerForDelegate(navive_captureErrorCallback), 
+
+            hVideoCapture = DTKVID.VideoCapture_Create(
+                Marshal.GetFunctionPointerForDelegate(navive_frameCapturedCallback),
+                Marshal.GetFunctionPointerForDelegate(navive_captureErrorCallback),
                 IntPtr.Zero);
         }
         ~VideoCapture()
@@ -169,58 +169,58 @@ namespace DTK.Video
             }
             if (hVideoCapture != IntPtr.Zero)
             {
-                DTKVID.VideoCapture_StopCapture(this.hVideoCapture);
-                DTKVID.VideoCapture_Destroy(this.hVideoCapture);
+                DTKVID.VideoCapture_StopCapture(hVideoCapture);
+                DTKVID.VideoCapture_Destroy(hVideoCapture);
                 hVideoCapture = IntPtr.Zero;
             }
         }
 
         private void OnFrameCapturedNative(IntPtr hVideoCapture, IntPtr frame, IntPtr notUsed)
         {
-            if (this.frameCapturedCallback != null)
-                this.frameCapturedCallback(this, new VideoFrame(frame), this.customObject);
+            if (frameCapturedCallback != null)
+                frameCapturedCallback(this, new VideoFrame(frame), customObject);
         }
 
         private void OnCaptureErrorNative(IntPtr hVideoCapture, ERR_CAPTURE errorCode, IntPtr notUsed)
         {
-            if (this.captureErrorCallback != null)
-                this.captureErrorCallback(this, errorCode, this.customObject);
+            if (captureErrorCallback != null)
+                captureErrorCallback(this, errorCode, customObject);
         }
 
         public int StartCaptureFromFile(string fileName, int repeat_count)
         {
-            return DTKVID.VideoCapture_StartCaptureFromFile(this.hVideoCapture, fileName, repeat_count);
+            return DTKVID.VideoCapture_StartCaptureFromFile(hVideoCapture, fileName, repeat_count);
         }
 
         public int StartCaptureFromIPCamera(string ipCameraURL)
         {
-            return DTKVID.VideoCapture_StartCaptureFromIPCamera(this.hVideoCapture, ipCameraURL);
+            return DTKVID.VideoCapture_StartCaptureFromIPCamera(hVideoCapture, ipCameraURL);
         }
 
         public int StartCaptureFromDevice(int deviceIndex, int captureWidth, int captureHeight)
         {
-            return DTKVID.VideoCapture_StartCaptureFromDevice(this.hVideoCapture, deviceIndex, captureWidth, captureHeight);
+            return DTKVID.VideoCapture_StartCaptureFromDevice(hVideoCapture, deviceIndex, captureWidth, captureHeight);
         }
 
         public int GetVideoWidth()
         {
-            return DTKVID.VideoCapture_GetVideoWidth(this.hVideoCapture);
+            return DTKVID.VideoCapture_GetVideoWidth(hVideoCapture);
         }
         public int GetVideoHeight()
         {
-            return DTKVID.VideoCapture_GetVideoHeight(this.hVideoCapture);
+            return DTKVID.VideoCapture_GetVideoHeight(hVideoCapture);
         }
         public int GetVideoFPS()
         {
-            return DTKVID.VideoCapture_GetVideoFPS(this.hVideoCapture);
+            return DTKVID.VideoCapture_GetVideoFPS(hVideoCapture);
         }
         public int GetVideoFOURCC()
         {
-            return DTKVID.VideoCapture_GetVideoFOURCC(this.hVideoCapture);
+            return DTKVID.VideoCapture_GetVideoFOURCC(hVideoCapture);
         }
         public int StopCapture()
         {
-            return DTKVID.VideoCapture_StopCapture(this.hVideoCapture);
+            return DTKVID.VideoCapture_StopCapture(hVideoCapture);
         }
         public static string GetLibraryVersion()
         {
@@ -258,14 +258,14 @@ namespace DTK.Video
             }
             else
             {
-            }           
+            }
         }
 
         public void Release()
         {
             if (hFrame != IntPtr.Zero)
             {
-                DTKVID.VideoFrame_Destroy(this.hFrame);
+                DTKVID.VideoFrame_Destroy(hFrame);
                 hFrame = IntPtr.Zero;
             }
         }
@@ -274,7 +274,7 @@ namespace DTK.Video
         {
             get
             {
-                return DTKVID.VideoFrame_GetWidth(this.hFrame);
+                return DTKVID.VideoFrame_GetWidth(hFrame);
             }
 
         }
@@ -282,27 +282,27 @@ namespace DTK.Video
         {
             get
             {
-                return DTKVID.VideoFrame_GetHeight(this.hFrame);
+                return DTKVID.VideoFrame_GetHeight(hFrame);
             }
 
         }
-        public UInt64 Timestamp
+        public ulong Timestamp
         {
             get
             {
-                return DTKVID.VideoFrame_Timestamp(this.hFrame);
+                return DTKVID.VideoFrame_Timestamp(hFrame);
             }
         }
 
         public Image GetImage()
         {
-            if (this.hFrame == IntPtr.Zero)
+            if (hFrame == IntPtr.Zero)
                 return null;
             IntPtr pBuffer;
             int width;
             int height;
             int stride;
-            DTKVID.VideoFrame_GetImageBuffer(this.hFrame, (int)PIXFMT.BGR24, out pBuffer, out width, out height, out stride);
+            DTKVID.VideoFrame_GetImageBuffer(hFrame, (int)PIXFMT.BGR24, out pBuffer, out width, out height, out stride);
             if (pBuffer == IntPtr.Zero)
                 return null;
 
@@ -317,7 +317,7 @@ namespace DTK.Video
                 src = new IntPtr(src.ToInt64() + stride);
             }
             bmp.UnlockBits(bmpData);
-             
+
             DTKVID.VideoFrame_FreeImageBuffer(pBuffer);
 
             return bmp;

@@ -1,72 +1,81 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="x64\DTKAVCodec.dll">
-      <Link>x64\DTKAVCodec.dll</Link>
+    <PackageReference Include="Core.System.Configuration.Install" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.ico" />
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKAVCodec.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKAVCodec.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKAVFormat.dll">
-      <Link>x64\DTKAVFormat.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKAVFormat.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKAVFormat.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKAVUtil.dll">
-      <Link>x64\DTKAVUtil.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKAVUtil.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKAVUtil.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKLPR5.dll">
-      <Link>x64\DTKLPR5.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKLPR5.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKLPR5.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKSWResample.dll">
-      <Link>x64\DTKSWResample.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKSWResample.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKSWResample.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKSWScale.dll">
-      <Link>x64\DTKSWScale.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKSWScale.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKSWScale.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x64\DTKVID.dll">
-      <Link>x64\DTKVID.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x64\DTKVID.dll">
+      <Link>SDK\DTKSoftware\DLLs\x64\DTKVID.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKAVCodec.dll">
-      <Link>x86\DTKAVCodec.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKAVCodec.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKAVCodec.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKAVFormat.dll">
-      <Link>x86\DTKAVFormat.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKAVFormat.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKAVFormat.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKAVUtil.dll">
-      <Link>x86\DTKAVUtil.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKAVUtil.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKAVUtil.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKLPR5.dll">
-      <Link>x86\DTKLPR5.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKLPR5.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKLPR5.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKSWResample.dll">
-      <Link>x86\DTKSWResample.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKSWResample.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKSWResample.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKSWScale.dll">
-      <Link>x86\DTKSWScale.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKSWScale.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKSWScale.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="x86\DTKVID.dll">
-      <Link>x86\DTKVID.dll</Link>
+    <Content Include="SDK\DTKSoftware\DLLs\x86\DTKVID.dll">
+      <Link>SDK\DTKSoftware\DLLs\x86\DTKVID.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

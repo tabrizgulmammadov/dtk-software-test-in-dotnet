@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using DTK.Video;
 
-namespace DTK.LPR
+namespace DTKSoftwareInDotnet.SDK.DTKSoftware
 {
     public class DTKLPR5
     {
@@ -16,7 +12,7 @@ namespace DTK.LPR
         static DTKLPR5()
         {
             var is64 = IntPtr.Size == 8;
-            string assembly_path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DTKLPR5)).Location);
+            string assembly_path = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(DTKLPR5)).Location), "SDK\\DTKSoftware\\DLLs");
             string library_path = is64 ? assembly_path + "\\x64\\" : assembly_path + "\\x86\\";
 
             SetDllDirectory(library_path);
@@ -85,7 +81,7 @@ namespace DTK.LPR
 
         [DllImport(dllName)]
         public static extern int LPREngine_IsLicensed(IntPtr hEngine);
-           
+
         [DllImport(dllName, CharSet = CharSet.Ansi)]
         public static extern int LPREngine_GetSupportedCountries(StringBuilder buffer, int bufferSize);
 
@@ -137,7 +133,7 @@ namespace DTK.LPR
 
         [DllImport(dllName)]
         public static extern void LPRParams_set_NumThreads(IntPtr hParams, int val);
-		
+
         [DllImport(dllName)]
         public static extern int LPRParams_get_FPSLimit(IntPtr hParams);
 
@@ -293,7 +289,7 @@ namespace DTK.LPR
 
         [DllImport(dllName)]
         public static extern int LicensePlate_GetSymbolRowNum(IntPtr hPlate, int index);
-        
+
         [DllImport(dllName)]
         public static extern int LicensePlate_GetConfidence(IntPtr hPlate);
 
@@ -421,23 +417,23 @@ namespace DTK.LPR
 
         public LPRParams()
         {
-            this.hParmas = DTKLPR5.LPRParams_Create();
+            hParmas = DTKLPR5.LPRParams_Create();
         }
 
         ~LPRParams()
         {
-            DTKLPR5.LPRParams_Destroy(this.hParmas);
+            DTKLPR5.LPRParams_Destroy(hParmas);
         }
 
         public int MinPlateWidth
         {
             get
             {
-                return DTKLPR5.LPRParams_get_MinPlateWidth(this.hParmas);
+                return DTKLPR5.LPRParams_get_MinPlateWidth(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_MinPlateWidth(this.hParmas, value);
+                DTKLPR5.LPRParams_set_MinPlateWidth(hParmas, value);
             }
         }
 
@@ -445,22 +441,22 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_MaxPlateWidth(this.hParmas);
+                return DTKLPR5.LPRParams_get_MaxPlateWidth(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_MaxPlateWidth(this.hParmas, value);
+                DTKLPR5.LPRParams_set_MaxPlateWidth(hParmas, value);
             }
         }
         public bool FormatPlateText
         {
             get
             {
-                return DTKLPR5.LPRParams_get_FormatPlateText(this.hParmas);
+                return DTKLPR5.LPRParams_get_FormatPlateText(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_FormatPlateText(this.hParmas, value);
+                DTKLPR5.LPRParams_set_FormatPlateText(hParmas, value);
             }
         }
 
@@ -468,11 +464,11 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_RotateAngle(this.hParmas);
+                return DTKLPR5.LPRParams_get_RotateAngle(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_RotateAngle(this.hParmas, value);
+                DTKLPR5.LPRParams_set_RotateAngle(hParmas, value);
             }
         }
 
@@ -480,11 +476,11 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_FPSLimit(this.hParmas);
+                return DTKLPR5.LPRParams_get_FPSLimit(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_FPSLimit(this.hParmas, value);
+                DTKLPR5.LPRParams_set_FPSLimit(hParmas, value);
             }
         }
 
@@ -492,11 +488,11 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_DuplicateResultsDelay(this.hParmas);
+                return DTKLPR5.LPRParams_get_DuplicateResultsDelay(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_DuplicateResultsDelay(this.hParmas, value);
+                DTKLPR5.LPRParams_set_DuplicateResultsDelay(hParmas, value);
             }
         }
 
@@ -504,11 +500,11 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_RecognitionOnMotion(this.hParmas);
+                return DTKLPR5.LPRParams_get_RecognitionOnMotion(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_RecognitionOnMotion(this.hParmas, value);
+                DTKLPR5.LPRParams_set_RecognitionOnMotion(hParmas, value);
             }
         }
 
@@ -516,11 +512,11 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_ResultConfirmationsCount(this.hParmas);
+                return DTKLPR5.LPRParams_get_ResultConfirmationsCount(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_ResultConfirmationsCount(this.hParmas, value);
+                DTKLPR5.LPRParams_set_ResultConfirmationsCount(hParmas, value);
             }
         }
 
@@ -528,26 +524,26 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_NumThreads(this.hParmas);
+                return DTKLPR5.LPRParams_get_NumThreads(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_NumThreads(this.hParmas, value);
+                DTKLPR5.LPRParams_set_NumThreads(hParmas, value);
             }
         }
-		
+
         public string BurnFormatString
         {
             get
-            {        
-                int size = DTKLPR5.LPRParams_get_BurnFormatString(this.hParmas, null, 0);
-				StringBuilder builder = new StringBuilder(size + 1);
-				DTKLPR5.LPRParams_get_BurnFormatString(this.hParmas, builder, builder.Capacity);
-				return builder.ToString();
+            {
+                int size = DTKLPR5.LPRParams_get_BurnFormatString(hParmas, null, 0);
+                StringBuilder builder = new StringBuilder(size + 1);
+                DTKLPR5.LPRParams_get_BurnFormatString(hParmas, builder, builder.Capacity);
+                return builder.ToString();
             }
             set
             {
-                DTKLPR5.LPRParams_set_BurnFormatString(this.hParmas, value);
+                DTKLPR5.LPRParams_set_BurnFormatString(hParmas, value);
             }
         }
 
@@ -555,106 +551,106 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPRParams_get_BurnPosition(this.hParmas);
+                return DTKLPR5.LPRParams_get_BurnPosition(hParmas);
             }
             set
             {
-                DTKLPR5.LPRParams_set_BurnPosition(this.hParmas, value);
+                DTKLPR5.LPRParams_set_BurnPosition(hParmas, value);
             }
         }
 
         public int GetZonesCount()
         {
-            return DTKLPR5.LPRParams_GetZonesCount(this.hParmas);
+            return DTKLPR5.LPRParams_GetZonesCount(hParmas);
         }
 
         public int AddZone()
         {
-            return DTKLPR5.LPRParams_AddZone(this.hParmas);
+            return DTKLPR5.LPRParams_AddZone(hParmas);
         }
 
         public void RemoveZone(int zoneIndex)
         {
-            DTKLPR5.LPRParams_RemoveZone(this.hParmas, zoneIndex);
+            DTKLPR5.LPRParams_RemoveZone(hParmas, zoneIndex);
         }
 
         public int GetZonePointsCount(int zoneIndex)
         {
-            return DTKLPR5.LPRParams_GetZonePointsCount(this.hParmas, zoneIndex);
+            return DTKLPR5.LPRParams_GetZonePointsCount(hParmas, zoneIndex);
         }
 
         public void GetZonePoint(int zoneIndex, int pointIndex, out int x, out int y)
         {
-            DTKLPR5.LPRParams_GetZonePoint(this.hParmas, zoneIndex, pointIndex, out x, out y);
+            DTKLPR5.LPRParams_GetZonePoint(hParmas, zoneIndex, pointIndex, out x, out y);
         }
         public void SetZonePoint(int zoneIndex, int pointIndex, int x, int y)
         {
-            DTKLPR5.LPRParams_SetZonePoint(this.hParmas, zoneIndex, pointIndex, x, y);
+            DTKLPR5.LPRParams_SetZonePoint(hParmas, zoneIndex, pointIndex, x, y);
         }
 
         public int AddZonePoint(int zoneIndex, int x, int y)
         {
-            return DTKLPR5.LPRParams_AddZonePoint(this.hParmas, zoneIndex, x, y);
+            return DTKLPR5.LPRParams_AddZonePoint(hParmas, zoneIndex, x, y);
         }
 
         public int RemoveZonePoint(int zoneIndex, int pointIndex)
         {
-            return DTKLPR5.LPRParams_RemoveZonePoint(this.hParmas, zoneIndex, pointIndex);
+            return DTKLPR5.LPRParams_RemoveZonePoint(hParmas, zoneIndex, pointIndex);
         }
 
         public int GetZonePointsCountF(int zoneIndex)
         {
-            return DTKLPR5.LPRParams_GetZonePointsCountF(this.hParmas, zoneIndex);
+            return DTKLPR5.LPRParams_GetZonePointsCountF(hParmas, zoneIndex);
         }
 
         public void GetZonePointF(int zoneIndex, int pointIndex, out float x, out float y)
         {
-            DTKLPR5.LPRParams_GetZonePointF(this.hParmas, zoneIndex, pointIndex, out x, out y);
+            DTKLPR5.LPRParams_GetZonePointF(hParmas, zoneIndex, pointIndex, out x, out y);
         }
         public void SetZonePointF(int zoneIndex, int pointIndex, float x, float y)
         {
-            DTKLPR5.LPRParams_SetZonePointF(this.hParmas, zoneIndex, pointIndex, x, y);
+            DTKLPR5.LPRParams_SetZonePointF(hParmas, zoneIndex, pointIndex, x, y);
         }
 
         public int AddZonePointF(int zoneIndex, float x, float y)
         {
-            return DTKLPR5.LPRParams_AddZonePointF(this.hParmas, zoneIndex, x, y);
+            return DTKLPR5.LPRParams_AddZonePointF(hParmas, zoneIndex, x, y);
         }
 
         public int RemoveZonePointF(int zoneIndex, int pointIndex)
         {
-            return DTKLPR5.LPRParams_RemoveZonePointF(this.hParmas, zoneIndex, pointIndex);
+            return DTKLPR5.LPRParams_RemoveZonePointF(hParmas, zoneIndex, pointIndex);
         }
 
         public string Countries
         {
             get
-            {        
-                int size = DTKLPR5.LPRParams_get_Countries(this.hParmas, null, 0);
+            {
+                int size = DTKLPR5.LPRParams_get_Countries(hParmas, null, 0);
                 if (size > 0)
                 {
                     StringBuilder builder = new StringBuilder(size + 1);
-                    DTKLPR5.LPRParams_get_Countries(this.hParmas, builder, builder.Capacity);
+                    DTKLPR5.LPRParams_get_Countries(hParmas, builder, builder.Capacity);
                     return builder.ToString();
                 }
                 return "";
             }
             set
             {
-                DTKLPR5.LPRParams_set_Countries(this.hParmas, value);
+                DTKLPR5.LPRParams_set_Countries(hParmas, value);
             }
         }
 
 
         public void SetXOption(string optionName, string val)
         {
-            DTKLPR5.LPRParams_SetXOption(this.hParmas, optionName, val);
+            DTKLPR5.LPRParams_SetXOption(hParmas, optionName, val);
         }
 
         public string GetXOption(string optionName)
         {
             StringBuilder builder = new StringBuilder(255);
-            DTKLPR5.LPRParams_GetXOption(this.hParmas, optionName, builder, 255);
+            DTKLPR5.LPRParams_GetXOption(hParmas, optionName, builder, 255);
             return builder.ToString();
         }
 
@@ -686,20 +682,20 @@ namespace DTK.LPR
             {
             }
             else
-            {           
+            {
             }
             if (hPlate != IntPtr.Zero)
             {
-                DTKLPR5.LicensePlate_Destroy(this.hPlate);
+                DTKLPR5.LicensePlate_Destroy(hPlate);
                 hPlate = IntPtr.Zero;
             }
-        }  
+        }
 
         public DateTime DateTime
         {
             get
             {
-                return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(this.Timestamp).ToLocalTime();
+                return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(Timestamp).ToLocalTime();
             }
         }
 
@@ -707,10 +703,10 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return "";
                 byte[] data = new byte[32];
-                int size = DTKLPR5.LicensePlate_GetText(this.hPlate, data, data.Length);
+                int size = DTKLPR5.LicensePlate_GetText(hPlate, data, data.Length);
                 return Encoding.UTF8.GetString(data, 0, size);
             }
         }
@@ -719,10 +715,10 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return "";
                 StringBuilder builder = new StringBuilder(8);
-                DTKLPR5.LicensePlate_GetCountryCode(this.hPlate, builder, 8);
+                DTKLPR5.LicensePlate_GetCountryCode(hPlate, builder, 8);
                 return builder.ToString();
             }
         }
@@ -730,10 +726,10 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return "";
                 StringBuilder builder = new StringBuilder(8);
-                DTKLPR5.LicensePlate_GetState(this.hPlate, builder, 8);
+                DTKLPR5.LicensePlate_GetState(hPlate, builder, 8);
                 return builder.ToString();
             }
         }
@@ -742,9 +738,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return (PLATE_TYPE)DTKLPR5.LicensePlate_GetType(this.hPlate);
+                return (PLATE_TYPE)DTKLPR5.LicensePlate_GetType(hPlate);
             }
         }
 
@@ -752,9 +748,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetNumRows(this.hPlate);
+                return DTKLPR5.LicensePlate_GetNumRows(hPlate);
             }
         }
 
@@ -762,9 +758,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetX(this.hPlate);
+                return DTKLPR5.LicensePlate_GetX(hPlate);
             }
         }
 
@@ -772,9 +768,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetY(this.hPlate);
+                return DTKLPR5.LicensePlate_GetY(hPlate);
             }
         }
 
@@ -782,9 +778,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetWidth(this.hPlate);
+                return DTKLPR5.LicensePlate_GetWidth(hPlate);
             }
         }
 
@@ -792,75 +788,75 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetHeight(this.hPlate);
+                return DTKLPR5.LicensePlate_GetHeight(hPlate);
             }
         }
 
         public int GetSymbolsCount()
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolsCount(this.hPlate);
+            return DTKLPR5.LicensePlate_GetSymbolsCount(hPlate);
         }
 
         public int GetSymbolX(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolX(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolX(hPlate, index);
         }
 
         public int GetSymbolY(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolY(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolY(hPlate, index);
         }
 
         public int GetSymbolWidth(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolWidth(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolWidth(hPlate, index);
         }
 
         public int GetSymbolHeight(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolHeight(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolHeight(hPlate, index);
         }
 
         public char GetSymbol(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return '?';
-            return DTKLPR5.LicensePlate_GetSymbol(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbol(hPlate, index);
         }
 
         public int GetSymbolConfidence(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolConfidence(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolConfidence(hPlate, index);
         }
 
         public int GetSymbolRowNum(int index)
         {
-            if (this.hPlate == IntPtr.Zero)
+            if (hPlate == IntPtr.Zero)
                 return 0;
-            return DTKLPR5.LicensePlate_GetSymbolRowNum(this.hPlate, index);
+            return DTKLPR5.LicensePlate_GetSymbolRowNum(hPlate, index);
         }
 
         public int Confidence
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetConfidence(this.hPlate);
+                return DTKLPR5.LicensePlate_GetConfidence(hPlate);
             }
         }
 
@@ -868,9 +864,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetZone(this.hPlate);
+                return DTKLPR5.LicensePlate_GetZone(hPlate);
             }
         }
 
@@ -878,9 +874,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetDirection(this.hPlate);
+                return DTKLPR5.LicensePlate_GetDirection(hPlate);
             }
         }
 
@@ -888,9 +884,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetTimestamp(this.hPlate);
+                return DTKLPR5.LicensePlate_GetTimestamp(hPlate);
             }
         }
 
@@ -898,7 +894,7 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LicensePlate_GetFrameTimestamp(this.hPlate);
+                return DTKLPR5.LicensePlate_GetFrameTimestamp(hPlate);
             }
         }
 
@@ -906,11 +902,11 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return "";
-                int size = DTKLPR5.LicensePlate_GetDateTimeString(this.hPlate, null, 0);
+                int size = DTKLPR5.LicensePlate_GetDateTimeString(hPlate, null, 0);
                 StringBuilder builder = new StringBuilder(size);
-                DTKLPR5.LicensePlate_GetDateTimeString(this.hPlate, builder, size);
+                DTKLPR5.LicensePlate_GetDateTimeString(hPlate, builder, size);
                 return builder.ToString();
             }
         }
@@ -919,9 +915,9 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetId(this.hPlate);
+                return DTKLPR5.LicensePlate_GetId(hPlate);
             }
         }
 
@@ -929,33 +925,33 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return 0;
-                return DTKLPR5.LicensePlate_GetCustomData(this.hPlate);
+                return DTKLPR5.LicensePlate_GetCustomData(hPlate);
             }
         }
 
         public int SaveImage(string fileName, int param)
         {
-            return DTKLPR5.LicensePlate_SaveImage(this.hPlate, fileName, param);
+            return DTKLPR5.LicensePlate_SaveImage(hPlate, fileName, param);
         }
 
         public int SavePlateImage(string fileName, int param)
         {
-            return DTKLPR5.LicensePlate_SavePlateImage(this.hPlate, fileName, param);
+            return DTKLPR5.LicensePlate_SavePlateImage(hPlate, fileName, param);
         }
 
         public Image Image
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return null;
                 IntPtr pBuffer;
                 int width;
                 int height;
                 int stride;
-                DTKLPR5.LicensePlate_GetImageBuffer(this.hPlate, out pBuffer, out width, out height, out stride);
+                DTKLPR5.LicensePlate_GetImageBuffer(hPlate, out pBuffer, out width, out height, out stride);
                 if (pBuffer == IntPtr.Zero)
                     return null;
                 Bitmap bmp = DTKLPR5.CreateBitmapFromBuffer(pBuffer, width, height, stride, PIXFMT.RGB24);
@@ -968,13 +964,13 @@ namespace DTK.LPR
         {
             get
             {
-                if (this.hPlate == IntPtr.Zero)
+                if (hPlate == IntPtr.Zero)
                     return null;
                 IntPtr pBuffer;
                 int width;
                 int height;
                 int stride;
-                DTKLPR5.LicensePlate_GetPlateImageBuffer(this.hPlate, out pBuffer, out width, out height, out stride);
+                DTKLPR5.LicensePlate_GetPlateImageBuffer(hPlate, out pBuffer, out width, out height, out stride);
                 if (pBuffer == IntPtr.Zero)
                     return null;
                 Bitmap bmp = DTKLPR5.CreateBitmapFromBuffer(pBuffer, width, height, stride, PIXFMT.RGB24);
@@ -1000,11 +996,11 @@ namespace DTK.LPR
 
         public LPREngine(LPRParams parameters, bool bVideo, LicensePlateDetected callback)
         {
-            this.licensePlateDetected_callback = callback;
+            licensePlateDetected_callback = callback;
             this.parameters = parameters;
-            this.licensePlateDetected_callback_native = new DTKLPR5.LicensePlateDetectedNative(OnLicensePlateDetectedNative);
-            this.frameProcessingCompleted_callback_native = new DTKLPR5.FrameProcessingCompletedNative(OnFrameProcessingCompletedNative);
-            this.hEngine = DTKLPR5.LPREngine_Create(parameters.hParmas, bVideo,Marshal.GetFunctionPointerForDelegate(licensePlateDetected_callback_native));
+            licensePlateDetected_callback_native = new DTKLPR5.LicensePlateDetectedNative(OnLicensePlateDetectedNative);
+            frameProcessingCompleted_callback_native = new DTKLPR5.FrameProcessingCompletedNative(OnFrameProcessingCompletedNative);
+            hEngine = DTKLPR5.LPREngine_Create(parameters.hParmas, bVideo, Marshal.GetFunctionPointerForDelegate(licensePlateDetected_callback_native));
         }
         ~LPREngine()
         {
@@ -1026,40 +1022,40 @@ namespace DTK.LPR
             }
             if (hEngine != IntPtr.Zero)
             {
-                DTKLPR5.LPREngine_Destroy(this.hEngine);
+                DTKLPR5.LPREngine_Destroy(hEngine);
                 hEngine = IntPtr.Zero;
             }
-        }  
+        }
 
         public void SetFrameProcessingCompletedCallback(FrameProcessingCompleted callback)
         {
-            DTKLPR5.LPREngine_SetFrameProcessingCompletedCallback(this.hEngine, Marshal.GetFunctionPointerForDelegate(this.frameProcessingCompleted_callback_native));
+            DTKLPR5.LPREngine_SetFrameProcessingCompletedCallback(hEngine, Marshal.GetFunctionPointerForDelegate(frameProcessingCompleted_callback_native));
             frameProcessingCompleted_callback = callback;
         }
 
         private void OnLicensePlateDetectedNative(IntPtr engine, IntPtr hPlate)
         {
             LicensePlate plate = new LicensePlate(hPlate);
-            if (this.licensePlateDetected_callback != null)
-                this.licensePlateDetected_callback(this, plate);
+            if (licensePlateDetected_callback != null)
+                licensePlateDetected_callback(this, plate);
         }
-        
+
         private void OnFrameProcessingCompletedNative(IntPtr engine, long customData, int status)
         {
-            if (this.frameProcessingCompleted_callback != null)
-                this.frameProcessingCompleted_callback(this, customData, status);
+            if (frameProcessingCompleted_callback != null)
+                frameProcessingCompleted_callback(this, customData, status);
         }
 
         public int GetProcessingFPS()
         {
-            return DTKLPR5.LPREngine_GetProcessingFPS(this.hEngine);           
+            return DTKLPR5.LPREngine_GetProcessingFPS(hEngine);
         }
 
         public bool IsQueueEmpty
         {
             get
             {
-                return DTKLPR5.LPREngine_IsQueueEmpty(this.hEngine);
+                return DTKLPR5.LPREngine_IsQueueEmpty(hEngine);
             }
         }
 
@@ -1067,7 +1063,7 @@ namespace DTK.LPR
         {
             get
             {
-                return DTKLPR5.LPREngine_IsLicensed(this.hEngine);
+                return DTKLPR5.LPREngine_IsLicensed(hEngine);
             }
         }
 
@@ -1080,7 +1076,7 @@ namespace DTK.LPR
         {
             List<LicensePlate> res = new List<LicensePlate>();
 
-            IntPtr hResult = DTKLPR5.LPREngine_ReadFromFile(this.hEngine, fileName);
+            IntPtr hResult = DTKLPR5.LPREngine_ReadFromFile(hEngine, fileName);
             if (hResult == IntPtr.Zero)
                 throw new Exception("Error reading image");
             int count = DTKLPR5.LPRResult_GetPlatesCount(hResult);
@@ -1093,7 +1089,7 @@ namespace DTK.LPR
             DTKLPR5.LPRResult_Destroy(hResult);
             return res;
         }
-      
+
         public List<LicensePlate> ReadFromMemFile(IntPtr pBuffer, int bufferSize)
         {
             int dummy;
@@ -1103,7 +1099,7 @@ namespace DTK.LPR
         public List<LicensePlate> ReadFromMemFile(IntPtr pBuffer, int bufferSize, out int processingTime)
         {
             List<LicensePlate> res = new List<LicensePlate>();
-            IntPtr hResult = DTKLPR5.LPREngine_ReadFromMemFile(this.hEngine, pBuffer, bufferSize);
+            IntPtr hResult = DTKLPR5.LPREngine_ReadFromMemFile(hEngine, pBuffer, bufferSize);
             if (hResult == IntPtr.Zero)
                 throw new Exception("Error reading image");
             int count = DTKLPR5.LPRResult_GetPlatesCount(hResult);
@@ -1126,7 +1122,7 @@ namespace DTK.LPR
         public List<LicensePlate> ReadFromURL(string url, out int processingTime)
         {
             List<LicensePlate> res = new List<LicensePlate>();
-            IntPtr hResult = DTKLPR5.LPREngine_ReadFromURL(this.hEngine, url);
+            IntPtr hResult = DTKLPR5.LPREngine_ReadFromURL(hEngine, url);
             if (hResult == IntPtr.Zero)
                 throw new Exception("Error reading image");
             int count = DTKLPR5.LPRResult_GetPlatesCount(hResult);
@@ -1149,7 +1145,7 @@ namespace DTK.LPR
         public List<LicensePlate> ReadFromImageBuffer(IntPtr pBuffer, int width, int height, int stride, PIXFMT pixelFormat, out int processingTime)
         {
             List<LicensePlate> res = new List<LicensePlate>();
-            IntPtr hResult = DTKLPR5.LPREngine_ReadFromImageBuffer(this.hEngine, pBuffer, width, height, stride, pixelFormat);
+            IntPtr hResult = DTKLPR5.LPREngine_ReadFromImageBuffer(hEngine, pBuffer, width, height, stride, pixelFormat);
             if (hResult == IntPtr.Zero)
                 throw new Exception("Error reading image");
             int count = DTKLPR5.LPRResult_GetPlatesCount(hResult);
@@ -1165,12 +1161,12 @@ namespace DTK.LPR
 
         public int PutFrame(VideoFrame frame, long customData)
         {
-            return DTKLPR5.LPREngine_PutFrame(this.hEngine, frame.hFrame, customData);
+            return DTKLPR5.LPREngine_PutFrame(hEngine, frame.hFrame, customData);
         }
 
         public int PutFrameImageBuffer(IntPtr pBuffer, int width, int height, int stride, PIXFMT pixelFormat, long timestamp, long customData)
         {
-            return DTKLPR5.LPREngine_PutFrameImageBuffer(this.hEngine, pBuffer, width, height, stride, pixelFormat, timestamp, customData);
+            return DTKLPR5.LPREngine_PutFrameImageBuffer(hEngine, pBuffer, width, height, stride, pixelFormat, timestamp, customData);
         }
 
         public static List<string> GetSupportedCountries()
@@ -1211,7 +1207,7 @@ namespace DTK.LPR
         {
             StringBuilder licKey = new StringBuilder(512);
             StringBuilder comm = new StringBuilder(255);
-            StringBuilder dongleID = new StringBuilder(255);           
+            StringBuilder dongleID = new StringBuilder(255);
             ulong expDate_time_t;
 
             DTKLPR5.LPREngine_GetActivatedLicenseInfoEx(licKey, 512, comm, 255, out channels, out expDate_time_t, dongleID, 255);
@@ -1256,7 +1252,7 @@ namespace DTK.LPR
         static public void SetNetLicenseServer(string ip_address, int port)
         {
             DTKLPR5.LPREngine_SetNetLicenseServer(ip_address, port);
-        }    
+        }
 
         static public void ReloadUSBDongles()
         {
